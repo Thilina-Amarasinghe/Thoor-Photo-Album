@@ -1,379 +1,54 @@
-/* ZineY Inspired Styles */
+/* Modern Photo Album Styles */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
 }
 
 body {
-    background: #f5f7fb;
-}
-
-/* Dashboard Layout */
-.dashboard {
-    display: flex;
+    background: #4a4a4a;
     min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Helvetica', Arial, sans-serif;
 }
 
-/* Sidebar */
-.sidebar {
-    width: 280px;
-    background: white;
-    box-shadow: 2px 0 10px rgba(0,0,0,0.05);
+/* Album container */
+.album-container {
     padding: 30px 20px;
-}
-
-.logo h2 {
-    font-size: 28px;
-    font-weight: 700;
-    color: #333;
-    margin-bottom: 40px;
-}
-
-.logo span {
-    color: #4a90e2;
-}
-
-.menu-item {
-    display: flex;
-    align-items: center;
-    padding: 12px 15px;
-    margin: 5px 0;
-    border-radius: 10px;
-    color: #666;
-    cursor: pointer;
-    transition: all 0.3s;
-}
-
-.menu-item i {
-    width: 30px;
-    font-size: 18px;
-}
-
-.menu-item:hover {
-    background: #f0f4ff;
-    color: #4a90e2;
-}
-
-.menu-item.active {
-    background: #4a90e2;
-    color: white;
-}
-
-.publication-types {
-    margin-top: 40px;
-}
-
-.publication-types h4 {
-    color: #999;
-    font-size: 12px;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    margin-bottom: 15px;
-}
-
-.publication-types ul {
-    list-style: none;
-}
-
-.publication-types li {
-    padding: 8px 0;
-    color: #666;
-    font-size: 14px;
-    display: flex;
-    align-items: center;
-    cursor: pointer;
-}
-
-.publication-types li i {
-    width: 30px;
-    color: #4a90e2;
-}
-
-/* Main Content */
-.main-content {
-    flex: 1;
-    padding: 30px;
-    background: #f5f7fb;
-}
-
-.header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 30px;
-}
-
-.header h1 {
-    font-size: 28px;
-    color: #333;
-}
-
-.header-actions button {
-    padding: 10px 20px;
-    border: none;
-    border-radius: 8px;
-    font-size: 14px;
-    cursor: pointer;
-    margin-left: 10px;
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-}
-
-.btn-primary {
-    background: #4a90e2;
-    color: white;
-}
-
-.btn-secondary {
-    background: white;
-    color: #666;
-    border: 1px solid #ddd;
-}
-
-/* Stats Cards */
-.stats-cards {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 20px;
-    margin-bottom: 30px;
-}
-
-.stat-card {
-    background: white;
-    padding: 20px;
-    border-radius: 12px;
-    display: flex;
-    align-items: center;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.03);
-}
-
-.stat-icon {
-    width: 50px;
-    height: 50px;
-    background: #f0f4ff;
-    border-radius: 12px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-right: 15px;
-}
-
-.stat-icon i {
-    font-size: 24px;
-    color: #4a90e2;
-}
-
-.stat-info h3 {
-    font-size: 24px;
-    color: #333;
-}
-
-.stat-info p {
-    color: #999;
-    font-size: 14px;
-}
-
-/* Preview Section */
-.preview-section {
-    background: white;
-    border-radius: 16px;
-    padding: 25px;
-    margin-bottom: 30px;
-    box-shadow: 0 5px 20px rgba(0,0,0,0.03);
-}
-
-.preview-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
-}
-
-.preview-header h2 {
-    font-size: 20px;
-    color: #333;
-}
-
-.badge {
-    background: #e8f0fe;
-    color: #4a90e2;
-    padding: 6px 12px;
+    background: #2c2c2c;
     border-radius: 20px;
-    font-size: 13px;
+    box-shadow: 0 30px 40px rgba(0,0,0,0.6);
 }
 
-/* Flipbook Container */
-.flipbook-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 400px;
-    background: #fafafa;
-    border-radius: 12px;
-    padding: 20px;
-}
-
+/* Book sizing */
 .book {
     position: relative;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    box-shadow: 0 20px 30px rgba(0,0,0,0.4);
 }
 
+/* Page styling - clean white background for photos */
 .page {
-    background-color: white;
-    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    background-color: #ffffff;
     display: flex;
     justify-content: center;
     align-items: center;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
 }
 
-.page img {
+/* Photos - full page with slight border */
+.photo {
     width: 100%;
     height: 100%;
     object-fit: cover;
     display: block;
-    pointer-events: none;
-}
-
-.cover-cover {
-    background: #222;
-}
-
-.cover-cover img {
-    opacity: 0.95;
-}
-
-/* Recent Flipbooks Grid */
-.recent-flipbooks h2 {
-    font-size: 20px;
-    color: #333;
-    margin-bottom: 20px;
-}
-
-.book-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 20px;
-}
-
-.book-card {
-    background: white;
-    border-radius: 12px;
-    overflow: hidden;
-    box-shadow: 0 3px 10px rgba(0,0,0,0.05);
-    transition: transform 0.3s;
-}
-
-.book-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-}
-
-.book-thumbnail {
-    position: relative;
-    height: 160px;
-    overflow: hidden;
-}
-
-.book-thumbnail img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-
-.book-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0,0,0,0.5);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    opacity: 0;
-    transition: opacity 0.3s;
-}
-
-.book-card:hover .book-overlay {
-    opacity: 1;
-}
-
-.view-btn {
-    padding: 8px 16px;
-    background: #4a90e2;
-    color: white;
-    border: none;
-    border-radius: 20px;
-    cursor: pointer;
-    font-size: 13px;
-    display: flex;
-    align-items: center;
-    gap: 5px;
-}
-
-.edit-btn {
-    width: 35px;
-    height: 35px;
-    border-radius: 50%;
-    background: white;
-    border: none;
-    cursor: pointer;
-    color: #666;
-}
-
-.book-info {
-    padding: 15px;
-}
-
-.book-info h3 {
-    font-size: 16px;
-    color: #333;
-    margin-bottom: 5px;
-}
-
-.book-info .date {
-    font-size: 12px;
-    color: #999;
-    margin-bottom: 5px;
-}
-
-.book-info .desc {
-    font-size: 13px;
-    color: #666;
-    line-height: 1.4;
+    border: 1px solid #e0e0e0;  /* සුදු පැහැති සියුම් බෝඩරයක් */
 }
 
 /* Responsive */
-@media (max-width: 1024px) {
-    .book-grid {
-        grid-template-columns: repeat(3, 1fr);
-    }
-}
-
 @media (max-width: 768px) {
-    .dashboard {
-        flex-direction: column;
-    }
-    
-    .sidebar {
-        width: 100%;
-    }
-    
-    .book-grid {
-        grid-template-columns: repeat(2, 1fr);
-    }
-    
-    .stats-cards {
-        grid-template-columns: 1fr;
-    }
-}
-
-@media (max-width: 480px) {
-    .book-grid {
-        grid-template-columns: 1fr;
+    .album-container {
+        padding: 15px 10px;
     }
 }
