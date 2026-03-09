@@ -1,40 +1,65 @@
-/* Basic reset & centering */
+/* Center the book on the page */
 body {
     margin: 0;
     min-height: 100vh;
-    background: #e0dbc8;
+    background: #a89f91;  /* aged paper background */
     display: flex;
     justify-content: center;
     align-items: center;
     font-family: sans-serif;
 }
 
-/* Book container – size will be set by JavaScript */
-.book {
+/* Wrapper that holds the book and creates the spine */
+.book-wrapper {
     position: relative;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-    transition: box-shadow 0.3s;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+    border-radius: 4px 8px 8px 4px;  /* slightly rounded right edge */
 }
 
-/* Page styling – each page is exactly A4 proportion */
+/* The actual book – size controlled by JavaScript */
+.book {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+/* Common page styles */
 .page {
-    background-color: white;
-    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    background-color: #fff;
+    box-shadow: 0 0 15px rgba(0,0,0,0.2);
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
-/* Images fill the page completely */
+/* Images fill the entire page without distortion */
 .page img {
     width: 100%;
     height: 100%;
-    object-fit: cover;      /* covers whole page without distortion */
+    object-fit: cover;
     display: block;
-    pointer-events: none;    /* prevents dragging the image instead of the page */
+    pointer-events: none;  /* prevents dragging the image instead of the page */
 }
 
-/* Optional: subtle page curl shadow (enhanced by turn.js) */
-.page {
-    background: #faf8f0;
+/* Covers can have a slightly different background if needed */
+.cover {
+    background: #2c3e50;  /* dark blue – will be overridden by the image */
+}
+.cover img {
+    opacity: 0.95;
+}
+
+/* Fake book spine attached to the left side */
+.book-wrapper::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -8px;          /* sticks out to the left */
+    width: 16px;
+    height: 100%;
+    background: linear-gradient(to right, #7f5e3b, #b89a7a, #7f5e3b);
+    border-radius: 4px 0 0 4px;
+    box-shadow: inset -2px 0 5px rgba(0,0,0,0.3);
+    z-index: 10;
+    transform: skewY(2deg);  /* slight tilt for realism */
 }
