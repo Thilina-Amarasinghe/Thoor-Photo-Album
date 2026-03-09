@@ -1,159 +1,172 @@
-(function() {
-  // ==================================================
-  // ඔයාගේ පින්තූරවල නම් මෙහි දමන්න (cover.jpg සිට back.jpg දක්වා)
-  // පිටු ගණන ඉරට්ටේ විය යුතුයි. උදාහරණයක් ලෙස:
-  // ==================================================
-  const images = [
-    "cover.jpg",      // front cover (දකුණු පැත්තේ පෙන්වනු ඇත)
-    "page1.jpg",
-    "page2.jpg",
-    "page3.jpg",
-    "page4.jpg",
-    "page5.jpg",
-    "page6.jpg",
-    "back.jpg"        // back cover (වම් පැත්තේ අවසානයේ)
-  ];
-  // ==================================================
+// ========== Global variables ==========
+let zoom = 1, currentX = 0, currentY = 0, isPanning = false, startX, startY;
+const wrapper = document.getElementById('flipbook-wrapper');
+const zoomLevelDisplay = document.getElementById('zoom-level');
 
-  // ---------- Audio: Page flip sound (Web Audio, no external file) ----------
-  let audioContext = null;
-  function getAudioContext() {
-    if (!audioContext) {
-      audioContext = new (window.AudioContext || window.webkitAudioContext)();
-    }
-    return audioContext;
+// ========== Helper: update transform with boundaries ==========
+function updateTransform() {
+  wrapper.style.transform = `scale(${zoom}) translate(${currentX}px, ${currentY}px)`;
+  zoomLevelDisplay.textContent = Math.round(zoom * 100) + '%';
+}
+
+// ========== Pan boundaries ==========
+function applyBoundaries() {
+  const wrapperRect = wrapper.getBoundingClientRect();
+  const scaledWidth = 1130 * zoom;
+  const scaledHeight = 800 * zoom;
+  
+  const maxX = Math.max(0, (scaledWidth - wrapperRect.width) / 2);
+  const maxY = Math.max(0, (scaledHeight - wrapperRect.height) / 2);
+  
+  currentX = Math.min(maxX, Math.max(-maxX, currentX));
+  currentY = Math.min(maxY, Math.max(-maxY, currentY));
+}
+
+// ========== Zoom with mouse position ==========
+function zoomAtPointer(zoomDelta, mouseX, mouseY) {
+  const oldZoom = zoom;
+  const newZoom = Math.min(Math.max(zoom + zoomDelta, 0.5), 3);
+  if (newZoom === oldZoom) return;
+
+  const rect = wrapper.getBoundingClientRect();
+  
+  const mouseRelX = (mouseX - rect.left) / rect.width;
+  const mouseRelY = (mouseY - rect.top) / rect.height;
+  
+  const width = 1130;
+  const height = 800;
+  
+  const pointX = (mouseRelX * rect.width - currentX) / oldZoom;
+  const pointY = (mouseRelY * rect.height - currentY) / oldZoom;
+  
+  zoom = newZoom;
+  
+  currentX = mouseRelX * rect.width - pointX * zoom;
+  currentY = mouseRelY * rect.height - pointY * zoom;
+  
+  applyBoundaries();
+  updateTransform();
+}
+
+// ========== Flipbook initialization ==========
+function initFlipbook() {
+  if ($('#flipbook').data('turn')) {
+    $('#flipbook').turn('destroy');
   }
 
-  function playFlipSound() {
-    const ctx = getAudioContext();
-    if (ctx.state === 'suspended') {
-      ctx.resume();
-    }
-    const now = ctx.currentTime;
-
-    // Paper rustle sound
-    const noiseBuffer = ctx.createBuffer(1, 0.12 * ctx.sampleRate, ctx.sampleRate);
-    const output = noiseBuffer.getChannelData(0);
-    for (let i = 0; i < noiseBuffer.length; i++) {
-      output[i] = Math.random() * 2 - 1;
-    }
-    const noise = ctx.createBufferSource();
-    noise.buffer = noiseBuffer;
-
-    const filter = ctx.createBiquadFilter();
-    filter.type = 'bandpass';
-    filter.frequency.value = 750;
-    filter.Q.value = 2;
-
-    const gainNode = ctx.createGain();
-    gainNode.gain.setValueAtTime(0, now);
-    gainNode.gain.linearRampToValueAtTime(0.13, now + 0.01);
-    gainNode.gain.exponentialRampToValueAtTime(0.001, now + 0.15);
-
-    noise.connect(filter);
-    filter.connect(gainNode);
-    gainNode.connect(ctx.destination);
-    noise.start(now);
-    noise.stop(now + 0.15);
-  }
-
-  // ---------- Dynamically generate pages from images array ----------
-  function generatePages() {
-    const $flipbook = $('#flipbook');
-    $flipbook.empty(); // Clear existing
-
-    images.forEach(function(imgSrc) {
-      const $page = $('<div class="page"></div>');
-      const $img = $('<img>').attr('src', 'images/' + imgSrc).attr('alt', 'page');
-      $page.append($img);
-      $flipbook.append($page);
-    });
-  }
-
-  // ---------- Initialize turn.js ----------
-  const $flipbook = $('#flipbook');
-
-  function initFlipbook() {
-    // Destroy previous instance if exists
-    if ($flipbook.data('turn')) {
-      $flipbook.turn('destroy');
-    }
-
-    // Get current dimensions (set by CSS)
-    const width = $flipbook.width();
-    const height = $flipbook.height();
-
-    $flipbook.turn({
-      width: width,
-      height: height,
-      autoCenter: true,          // පොත මැදට ගෙන එයි
-      display: 'double',          // පිටු දෙකක් එක පැත්තකින් පෙන්වයි
-      gradients: true,            // පිටු අතර සෙවනැල්ල
-      shadows: true,              // පිටු යට සෙවනැල්ල
-      elevation: 50,              // පිටු හැරෙන විට උස
-      duration: 600,              // පෙරලීමේ වේගය (ms)
-      when: {
-        // පිටුව හැරෙන සෑම විටම ශබ්දය
-        turning: function(event, page, view) {
-          playFlipSound();
-        },
-        // අදින්න පටන් ගන්නා විට ශබ්දය
-        start: function(event, pageObject, corner) {
-          playFlipSound();
-        }
+  $('#flipbook').turn({
+    width: $('#flipbook').width(),
+    height: $('#flipbook').height(),
+    autoCenter: true,
+    display: 'double',
+    gradients: true,
+    acceleration: true,
+    elevation: 50,
+    duration: 1000,
+    when: {
+      turning: function() {
+        document.getElementById('flipSound').play().catch(e => console.log('Audio play failed:', e));
+      },
+      turned: function() {
+        $('#flipbook .page').each(function(index) {
+          $(this).toggleClass('left-page', index % 2 === 0);
+        });
       }
-    });
-
-    // Force first view to show cover on right side
-    // (turn.js automatically shows first two pages, but cover should be on right)
-    // Go to page 1 to ensure cover is on right
-    $flipbook.turn('page', 1);
-  }
-
-  // ---------- Resize handler (responsive) ----------
-  function resizeFlipbook() {
-    if ($flipbook.data('turn')) {
-      $flipbook.turn('destroy');
     }
-    initFlipbook();
-  }
+  });
 
-  // ---------- Zoom & Pan (using CSS transform) ----------
-  let zoom = 1, currentX = 0, currentY = 0, isPanning = false, startX, startY;
-  const wrapper = document.getElementById('flipbook-wrapper');
+  setTimeout(function() {
+    $('#flipbook .page').each(function(index) {
+      $(this).toggleClass('left-page', index % 2 === 0);
+    });
+  }, 100);
+}
 
-  function updateTransform() {
-    wrapper.style.transform = `scale(${zoom}) translate(${currentX}px, ${currentY}px)`;
-  }
+// ========== Corner clicks ==========
+function bindCornerClicks() {
+  $('#flipbook').off('click.corner', '.page');
+  $('#flipbook').on('click.corner', '.page', function(e) {
+    const $page = $(this);
+    const pageWidth = $page.width();
+    const clickX = e.pageX - $page.offset().left;
+    const threshold = 60;
 
-  // Zoom controls
-  $('#zoomIn').click(function() {
+    const isLeftPage = $page.hasClass('left-page');
+    
+    if (clickX > pageWidth - threshold) {
+      if (!isLeftPage) {
+        e.stopPropagation();
+        $('#flipbook').turn('next');
+      }
+    }
+    else if (clickX < threshold) {
+      if (isLeftPage) {
+        e.stopPropagation();
+        $('#flipbook').turn('previous');
+      }
+    }
+  });
+}
+
+// ========== Hover effect ==========
+function bindHoverEffect() {
+  $('#flipbook').off('mouseenter.corner mouseleave.corner', '.page');
+  $('#flipbook').on('mouseenter.corner', '.page', function() {
+    $(this).addClass('corner-hover');
+  }).on('mouseleave.corner', '.page', function() {
+    $(this).removeClass('corner-hover');
+  });
+}
+
+// ========== Resize handling ==========
+let resizeTimer;
+$(window).resize(function() {
+  clearTimeout(resizeTimer);
+  resizeTimer = setTimeout(function() {
+    if ($('#flipbook').data('turn')) {
+      const currentPage = $('#flipbook').turn('page');
+      initFlipbook();
+      $('#flipbook').turn('page', currentPage);
+      setTimeout(function() {
+        $('#flipbook .page').each(function(index) {
+          $(this).toggleClass('left-page', index % 2 === 0);
+        });
+      }, 100);
+    } else {
+      initFlipbook();
+    }
+  }, 250);
+});
+
+// ========== Zoom and pan ==========
+function initZoomPan() {
+  document.getElementById('zoomIn').addEventListener('click', function() {
     zoom = Math.min(zoom + 0.2, 3);
+    applyBoundaries();
     updateTransform();
   });
-  $('#zoomOut').click(function() {
+  
+  document.getElementById('zoomOut').addEventListener('click', function() {
     zoom = Math.max(zoom - 0.2, 0.5);
+    applyBoundaries();
     updateTransform();
   });
-  $('#resetZoom').click(function() {
+  
+  document.getElementById('resetZoom').addEventListener('click', function() {
     zoom = 1;
     currentX = 0;
     currentY = 0;
     updateTransform();
   });
 
-  // Wheel zoom (Ctrl + scroll)
   wrapper.addEventListener('wheel', function(e) {
     if (e.ctrlKey) {
       e.preventDefault();
-      const delta = -e.deltaY * 0.01;
-      zoom += delta;
-      zoom = Math.min(Math.max(0.5, zoom), 3);
-      updateTransform();
+      const delta = e.deltaY > 0 ? -0.1 : 0.1;
+      zoomAtPointer(delta, e.clientX, e.clientY);
     }
   }, { passive: false });
 
-  // Pan (mouse drag)
   wrapper.addEventListener('mousedown', function(e) {
     if (zoom > 1) {
       isPanning = true;
@@ -167,6 +180,7 @@
     if (isPanning) {
       currentX = e.clientX - startX;
       currentY = e.clientY - startY;
+      applyBoundaries();
       updateTransform();
     }
   });
@@ -175,42 +189,26 @@
     isPanning = false;
     wrapper.style.cursor = 'grab';
   });
+}
 
-  wrapper.addEventListener('dragstart', (e) => e.preventDefault());
+// ========== Navigation buttons ==========
+$('#prevBtn').click(function() {
+  $('#flipbook').turn('previous');
+});
+$('#nextBtn').click(function() {
+  $('#flipbook').turn('next');
+});
 
-  // ---------- Navigation buttons ----------
-  $('#prevPage').click(function() {
-    $flipbook.turn('previous');
-  });
-  $('#nextPage').click(function() {
-    $flipbook.turn('next');
-  });
+// ========== Document ready ==========
+$(document).ready(function() {
+  initFlipbook();
+  bindCornerClicks();
+  bindHoverEffect();
+  initZoomPan();
 
-  // ---------- Hover effect (corner curl) ----------
-  $(document).on('mouseenter', '#flipbook .page', function() {
-    $(this).addClass('corner-hover');
-  }).on('mouseleave', '#flipbook .page', function() {
-    $(this).removeClass('corner-hover');
-  });
-
-  // ---------- Start everything after images load ----------
-  $(window).on('load', function() {
-    generatePages();      // Create pages from array
-    initFlipbook();
-  });
-
-  // Fallback if images cached
-  $(document).ready(function() {
-    setTimeout(function() {
-      if (!$flipbook.data('turn')) {
-        generatePages();
-        initFlipbook();
-      }
-    }, 200);
-  });
-
-  // Resize event
-  $(window).on('resize', function() {
-    resizeFlipbook();
-  });
-})();
+  setTimeout(function() {
+    $('#flipbook .page').each(function(index) {
+      $(this).toggleClass('left-page', index % 2 === 0);
+    });
+  }, 100);
+});
