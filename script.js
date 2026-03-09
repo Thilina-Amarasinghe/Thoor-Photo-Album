@@ -1,22 +1,21 @@
 (function() {
   // ==================================================
-  // 1. EDIT THIS ARRAY: ඔයාගේ පින්තූරවල නම් මෙහි දමන්න
-  //    පිළිවෙල: cover, page1, page2, ..., backCover
-  //    සම්පූර්ණ පිටු ගණන ඉරට්ටේ විය යුතුයි.
+  // ඔයාගේ පින්තූරවල නම් මෙහි දමන්න (cover.jpg සිට back.jpg දක්වා)
+  // පිටු ගණන ඉරට්ටේ විය යුතුයි. උදාහරණයක් ලෙස:
   // ==================================================
   const images = [
-    "cover.jpg",      // front cover
+    "cover.jpg",      // front cover (දකුණු පැත්තේ පෙන්වනු ඇත)
     "page1.jpg",
     "page2.jpg",
     "page3.jpg",
     "page4.jpg",
     "page5.jpg",
     "page6.jpg",
-    "back.jpg"        // back cover
+    "back.jpg"        // back cover (වම් පැත්තේ අවසානයේ)
   ];
   // ==================================================
 
-  // ---------- Audio: Page flip sound (Web Audio) ----------
+  // ---------- Audio: Page flip sound (Web Audio, no external file) ----------
   let audioContext = null;
   function getAudioContext() {
     if (!audioContext) {
@@ -32,7 +31,7 @@
     }
     const now = ctx.currentTime;
 
-    // Paper rustle
+    // Paper rustle sound
     const noiseBuffer = ctx.createBuffer(1, 0.12 * ctx.sampleRate, ctx.sampleRate);
     const output = noiseBuffer.getChannelData(0);
     for (let i = 0; i < noiseBuffer.length; i++) {
@@ -58,7 +57,7 @@
     noise.stop(now + 0.15);
   }
 
-  // ---------- Dynamically generate pages ----------
+  // ---------- Dynamically generate pages from images array ----------
   function generatePages() {
     const $flipbook = $('#flipbook');
     $flipbook.empty(); // Clear existing
@@ -71,33 +70,44 @@
     });
   }
 
-  // ---------- Initialize flipbook ----------
+  // ---------- Initialize turn.js ----------
   const $flipbook = $('#flipbook');
-  let currentWidth, currentHeight;
 
   function initFlipbook() {
+    // Destroy previous instance if exists
     if ($flipbook.data('turn')) {
       $flipbook.turn('destroy');
     }
 
-    // Use current dimensions
-    currentWidth = $flipbook.width();
-    currentHeight = $flipbook.height();
+    // Get current dimensions (set by CSS)
+    const width = $flipbook.width();
+    const height = $flipbook.height();
 
     $flipbook.turn({
-      width: currentWidth,
-      height: currentHeight,
-      autoCenter: true,
-      display: 'double',
-      gradients: true,
-      shadows: true,
-      elevation: 50,
-      duration: 600,
+      width: width,
+      height: height,
+      autoCenter: true,          // පොත මැදට ගෙන එයි
+      display: 'double',          // පිටු දෙකක් එක පැත්තකින් පෙන්වයි
+      gradients: true,            // පිටු අතර සෙවනැල්ල
+      shadows: true,              // පිටු යට සෙවනැල්ල
+      elevation: 50,              // පිටු හැරෙන විට උස
+      duration: 600,              // පෙරලීමේ වේගය (ms)
       when: {
-        turning: function() { playFlipSound(); },
-        start: function() { playFlipSound(); }
+        // පිටුව හැරෙන සෑම විටම ශබ්දය
+        turning: function(event, page, view) {
+          playFlipSound();
+        },
+        // අදින්න පටන් ගන්නා විට ශබ්දය
+        start: function(event, pageObject, corner) {
+          playFlipSound();
+        }
       }
     });
+
+    // Force first view to show cover on right side
+    // (turn.js automatically shows first two pages, but cover should be on right)
+    // Go to page 1 to ensure cover is on right
+    $flipbook.turn('page', 1);
   }
 
   // ---------- Resize handler (responsive) ----------
@@ -108,7 +118,7 @@
     initFlipbook();
   }
 
-  // ---------- Zoom & Pan ----------
+  // ---------- Zoom & Pan (using CSS transform) ----------
   let zoom = 1, currentX = 0, currentY = 0, isPanning = false, startX, startY;
   const wrapper = document.getElementById('flipbook-wrapper');
 
@@ -143,7 +153,7 @@
     }
   }, { passive: false });
 
-  // Pan
+  // Pan (mouse drag)
   wrapper.addEventListener('mousedown', function(e) {
     if (zoom > 1) {
       isPanning = true;
@@ -183,7 +193,7 @@
     $(this).removeClass('corner-hover');
   });
 
-  // ---------- Start everything ----------
+  // ---------- Start everything after images load ----------
   $(window).on('load', function() {
     generatePages();      // Create pages from array
     initFlipbook();
