@@ -1,22 +1,32 @@
-/* Center the book on the page */
+/* Center the book on a shelf-like background */
 body {
     margin: 0;
     min-height: 100vh;
-    background: #a89f91;  /* aged paper background */
+    background: #5c4e3d;
+    background-image: radial-gradient(circle at 20% 30%, #7f6b5a, #3a2e24);
     display: flex;
     justify-content: center;
     align-items: center;
-    font-family: sans-serif;
+    font-family: 'Georgia', serif;
 }
 
-/* Wrapper that holds the book and creates the spine */
+/* Shelf effect */
+.shelf {
+    padding: 30px 20px;
+    background: linear-gradient(to bottom, #8b7a66, #5f4e3c);
+    border-radius: 20px 20px 5px 5px;
+    box-shadow: 0 20px 30px rgba(0,0,0,0.7);
+}
+
+/* Wrapper for spine effect */
 .book-wrapper {
     position: relative;
-    box-shadow: 0 20px 40px rgba(0,0,0,0.5);
-    border-radius: 4px 8px 8px 4px;  /* slightly rounded right edge */
+    box-shadow: 0 25px 40px rgba(0,0,0,0.8);
+    border-radius: 6px 10px 10px 6px;
+    transition: box-shadow 0.3s;
 }
 
-/* The actual book – size controlled by JavaScript */
+/* Book dimensions set by JavaScript */
 .book {
     position: relative;
     width: 100%;
@@ -25,41 +35,57 @@ body {
 
 /* Common page styles */
 .page {
-    background-color: #fff;
-    box-shadow: 0 0 15px rgba(0,0,0,0.2);
+    background-color: #faf6f0;
+    box-shadow: 0 0 15px rgba(0,0,0,0.25);
     display: flex;
     justify-content: center;
     align-items: center;
+    border-radius: 2px;
 }
 
-/* Images fill the entire page without distortion */
+/* Images fill the page */
 .page img {
     width: 100%;
     height: 100%;
     object-fit: cover;
     display: block;
-    pointer-events: none;  /* prevents dragging the image instead of the page */
+    pointer-events: none;
 }
 
-/* Covers can have a slightly different background if needed */
+/* Cover pages slightly darkened */
 .cover {
-    background: #2c3e50;  /* dark blue – will be overridden by the image */
+    background: #1e2a36;
 }
-.cover img {
-    opacity: 0.95;
+.cover-front img, .cover-back img {
+    filter: brightness(0.95) contrast(1.1);
 }
 
-/* Fake book spine attached to the left side */
+/* Realistic spine on the left */
 .book-wrapper::before {
     content: "";
     position: absolute;
-    top: 0;
-    left: -8px;          /* sticks out to the left */
-    width: 16px;
-    height: 100%;
-    background: linear-gradient(to right, #7f5e3b, #b89a7a, #7f5e3b);
-    border-radius: 4px 0 0 4px;
-    box-shadow: inset -2px 0 5px rgba(0,0,0,0.3);
+    top: -2px;
+    left: -18px;
+    width: 22px;
+    height: calc(100% + 4px);
+    background: linear-gradient(to right, #3d2e1f, #8b6f4c, #3d2e1f);
+    border-radius: 6px 0 0 6px;
+    box-shadow: inset -3px 0 8px rgba(0,0,0,0.6), 3px 0 8px rgba(0,0,0,0.3);
+    transform: skewY(1deg);
     z-index: 10;
-    transform: skewY(2deg);  /* slight tilt for realism */
+    border-right: 2px solid #b5946a;
+}
+
+/* Decorative gold line on spine */
+.book-wrapper::after {
+    content: "";
+    position: absolute;
+    top: 15%;
+    left: -12px;
+    width: 4px;
+    height: 70%;
+    background: linear-gradient(to bottom, #e9d29b, #b3925c, #e9d29b);
+    border-radius: 2px;
+    opacity: 0.5;
+    z-index: 11;
 }
