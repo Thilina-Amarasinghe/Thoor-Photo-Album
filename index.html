@@ -1,40 +1,30 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Photo Album Flip Book</title>
-    <link rel="stylesheet" href="style.css">
-    <!-- jQuery and turn.js -->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/turn.js/4.1.0/turn.min.js"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Dynamic Flipbook</title>
+  <link rel="stylesheet" href="style.css">
+  <!-- jQuery + turn.js -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/turn.js/4.1.0/turn.min.js"></script>
 </head>
 <body>
-    <div class="album-container">
-        <div class="book" id="book">
-            <!-- Cover page (front) -->
-            <div class="page photo-page">
-                <img src="images/cover.jpg" alt="Cover" class="photo">
-            </div>
-            <!-- Inner pages (ඔයාගේ ඡායාරූප) -->
-            <div class="page photo-page">
-                <img src="images/photo1.jpg" alt="Photo 1" class="photo">
-            </div>
-            <div class="page photo-page">
-                <img src="images/photo2.jpg" alt="Photo 2" class="photo">
-            </div>
-            <div class="page photo-page">
-                <img src="images/photo3.jpg" alt="Photo 3" class="photo">
-            </div>
-            <div class="page photo-page">
-                <img src="images/photo4.jpg" alt="Photo 4" class="photo">
-            </div>
-            <!-- Back cover -->
-            <div class="page photo-page">
-                <img src="images/back.jpg" alt="Back Cover" class="photo">
-            </div>
-        </div>
-    </div>
-    <script src="script.js"></script>
+  <div id="flipbook-wrapper">
+    <div id="flipbook"></div>
+  </div>
+
+  <!-- Controls -->
+  <div class="controls">
+    <button id="prevPage">◀</button>
+    <button id="nextPage">▶</button>
+  </div>
+  <div class="zoom-controls">
+    <button id="zoomIn">+</button>
+    <button id="zoomOut">−</button>
+    <button id="resetZoom">⟳</button>
+  </div>
+
+  <script src="script.js"></script>
 </body>
 </html>
