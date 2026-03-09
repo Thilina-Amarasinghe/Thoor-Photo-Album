@@ -1,5 +1,5 @@
 (function() {
-    // ---------- ශබ්දය (page flip sound) ----------
+    // ---------- Audio (same as before) ----------
     let audioContext = null;
     function getAudioContext() {
         if (!audioContext) {
@@ -15,7 +15,6 @@
         }
         const now = ctx.currentTime;
 
-        // පිටු හැරෙන ශබ්දය
         const noiseBuffer = ctx.createBuffer(1, 0.12 * ctx.sampleRate, ctx.sampleRate);
         const output = noiseBuffer.getChannelData(0);
         for (let i = 0; i < noiseBuffer.length; i++) {
@@ -41,13 +40,13 @@
         noise.stop(now + 0.15);
     }
 
-    // ---------- පොතේ ප්‍රමාණය හදන්න ----------
+    // ---------- Flipbook Setup ----------
     const $book = $('#book');
 
     function resizeBook() {
-        let containerWidth = $('.book-container').width();
-        let spreadWidth = Math.min(containerWidth * 0.9, 1200);
-        let bookHeight = spreadWidth * 0.707; // A4 aspect ratio
+        let containerWidth = $('.flipbook-container').width();
+        let spreadWidth = Math.min(containerWidth * 0.8, 800);
+        let bookHeight = spreadWidth * 0.707;
 
         $book.width(spreadWidth);
         $book.height(bookHeight);
@@ -57,22 +56,20 @@
         }
     }
 
-    // ---------- turn.js පටන් ගන්න ----------
     $(window).on('load', function() {
         resizeBook();
 
         $book.turn({
             width: $book.width(),
             height: $book.height(),
-            autoCenter: true,           // පොත මැදට ගන්න
-            elevation: 50,               // පිටුව උඩට එන උස
-            gradients: true,             // පිටු අතර සෙවනැල්ල
-            shadows: true,               // පිටු යට සෙවනැල්ල
-            turnCorners: 'bl,br',        // **මෙතනයි වැදගත්ම දේ** පහළ කොන් දෙකෙන් විතරක් අල්ලන්න පුළුවන්
-            duration: 600                 // පිටු හැරෙන වේගය
+            autoCenter: true,
+            elevation: 50,
+            gradients: true,
+            shadows: true,
+            turnCorners: 'bl,br',
+            duration: 600
         });
 
-        // පිටුව හැරෙනකොට සහ අදින්න පටන් ගන්නකොට ශබ්දය
         $book.on('turning', function() { playFlipSound(); });
         $book.on('start', function() { playFlipSound(); });
     });
@@ -81,24 +78,8 @@
         resizeBook();
     });
 
-    // fallback
-    $(document).ready(function() {
-        setTimeout(function() {
-            if (!$book.data('turn')) {
-                resizeBook();
-                $book.turn({
-                    width: $book.width(),
-                    height: $book.height(),
-                    autoCenter: true,
-                    elevation: 50,
-                    gradients: true,
-                    shadows: true,
-                    turnCorners: 'bl,br',
-                    duration: 600
-                });
-                $book.on('turning', function() { playFlipSound(); });
-                $book.on('start', function() { playFlipSound(); });
-            }
-        }, 100);
+    // View button clicks
+    $('.view-btn').on('click', function() {
+        alert('Opening flipbook... (මෙතනදි ඔයාට flipbook එක open කරන්න පුළුවන්)');
     });
 })();
