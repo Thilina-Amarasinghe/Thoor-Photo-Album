@@ -1,49 +1,38 @@
-/* Center the book on a shelf-like background */
+/* පොත පිටුව මැදට ගේන්න */
 body {
     margin: 0;
     min-height: 100vh;
-    background: #5c4e3d;
-    background-image: radial-gradient(circle at 20% 30%, #7f6b5a, #3a2e24);
+    background: #aaa;
     display: flex;
     justify-content: center;
     align-items: center;
-    font-family: 'Georgia', serif;
+    font-family: sans-serif;
 }
 
-/* Shelf effect */
-.shelf {
-    padding: 30px 20px;
-    background: linear-gradient(to bottom, #8b7a66, #5f4e3c);
-    border-radius: 20px 20px 5px 5px;
-    box-shadow: 0 20px 30px rgba(0,0,0,0.7);
+/* පොත වටේ ඉඩක් */
+.book-container {
+    padding: 20px;
+    background: #7a6b5a;
+    border-radius: 10px;
+    box-shadow: 0 20px 30px rgba(0,0,0,0.5);
 }
 
-/* Wrapper for spine effect */
-.book-wrapper {
-    position: relative;
-    box-shadow: 0 25px 40px rgba(0,0,0,0.8);
-    border-radius: 6px 10px 10px 6px;
-    transition: box-shadow 0.3s;
-}
-
-/* Book dimensions set by JavaScript */
+/* පොතේ ප්‍රමාණය JS එකෙන් හැදෙයි */
 .book {
     position: relative;
-    width: 100%;
-    height: 100%;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.4);
 }
 
-/* Common page styles */
+/* පිටු සැකසුම */
 .page {
-    background-color: #faf6f0;
-    box-shadow: 0 0 15px rgba(0,0,0,0.25);
+    background-color: white;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
     display: flex;
     justify-content: center;
     align-items: center;
-    border-radius: 2px;
 }
 
-/* Images fill the page */
+/* පින්තූර පිටුව පුරා */
 .page img {
     width: 100%;
     height: 100%;
@@ -52,40 +41,10 @@ body {
     pointer-events: none;
 }
 
-/* Cover pages slightly darkened */
-.cover {
-    background: #1e2a36;
+/* කවරයට ටිකක් වෙනස් පෙනුමක් */
+.cover-cover {
+    background: #222;
 }
-.cover-front img, .cover-back img {
-    filter: brightness(0.95) contrast(1.1);
-}
-
-/* Realistic spine on the left */
-.book-wrapper::before {
-    content: "";
-    position: absolute;
-    top: -2px;
-    left: -18px;
-    width: 22px;
-    height: calc(100% + 4px);
-    background: linear-gradient(to right, #3d2e1f, #8b6f4c, #3d2e1f);
-    border-radius: 6px 0 0 6px;
-    box-shadow: inset -3px 0 8px rgba(0,0,0,0.6), 3px 0 8px rgba(0,0,0,0.3);
-    transform: skewY(1deg);
-    z-index: 10;
-    border-right: 2px solid #b5946a;
-}
-
-/* Decorative gold line on spine */
-.book-wrapper::after {
-    content: "";
-    position: absolute;
-    top: 15%;
-    left: -12px;
-    width: 4px;
-    height: 70%;
-    background: linear-gradient(to bottom, #e9d29b, #b3925c, #e9d29b);
-    border-radius: 2px;
-    opacity: 0.5;
-    z-index: 11;
+.cover-cover img {
+    opacity: 0.95;
 }
