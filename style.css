@@ -1,74 +1,106 @@
 /* Base styles */
 body {
   margin: 0;
-  background: #3a3a3a;
+  background: #444;
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 100vh;
-  font-family: sans-serif;
-  overflow: hidden;
-}
-
-/* Wrapper for zoom/pan */
-#flipbook-wrapper {
-  width: 100vw;
   height: 100vh;
   overflow: hidden;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+/* Wrapper for zoom & pan */
+#flipbook-wrapper {
+  width: 1130px;
+  height: 800px;
+  overflow: hidden;
   position: relative;
+  transform: scale(1) translate(0px, 0px);
   transform-origin: 0 0;
   cursor: grab;
-  background: #2c2c2c;
+  box-shadow: 0 0 30px rgba(0,0,0,0.5);
+  background: #222;
+  border-radius: 4px;
 }
 
 #flipbook-wrapper:active {
   cursor: grabbing;
 }
 
-/* Flipbook container */
+/* Flipbook */
 #flipbook {
-  width: 1130px;   /* Base width (2xA4) */
-  height: 800px;   /* Base height (A4) */
-  margin: 0 auto;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+  width: 1130px;
+  height: 800px;
 }
 
-/* Pages */
 #flipbook .page {
-  width: 565px;    /* Half of base width */
+  width: 565px;
   height: 800px;
   background: white;
-  box-shadow: 0 0 20px rgba(0,0,0,0.3);
-  overflow: hidden;
+  box-shadow: 0 0 10px rgba(0,0,0,0.4);
+  user-select: none;
   position: relative;
+  overflow: hidden;
+  transition: box-shadow 0.2s ease;
 }
 
 #flipbook .page img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  display: block;
   user-select: none;
   pointer-events: none;
 }
 
-/* Corner curl effect on hover */
+/* Corner hover effect */
 .corner-hover::after {
   content: "";
   position: absolute;
   bottom: 0;
   right: 0;
-  width: 80px;
-  height: 80px;
-  background: linear-gradient(135deg, rgba(0,0,0,0.2), transparent 70%);
+  width: 60px;
+  height: 60px;
+  background: linear-gradient(135deg, rgba(255,255,255,0.3), rgba(200,200,200,0.5) 70%);
   clip-path: polygon(100% 0, 100% 100%, 0 100%);
   pointer-events: none;
-  z-index: 10;
+  transition: background 0.2s;
+}
+
+/* Left page corner */
+.page.left-page.corner-hover::after {
+  left: 0;
+  right: auto;
+  transform: scaleX(-1);
+}
+
+/* Corner hint */
+.page .corner-hint {
+  position: absolute;
+  width: 80px;
+  height: 80px;
+  bottom: 0;
+  right: 0;
+  background: radial-gradient(circle at bottom right, rgba(255,215,0,0.3), transparent 70%);
+  clip-path: polygon(100% 0, 100% 100%, 0 100%);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.page.left-page .corner-hint {
+  left: 0;
+  right: auto;
+  transform: scaleX(-1);
+}
+
+.page:hover .corner-hint {
+  opacity: 1;
 }
 
 /* Controls */
 .controls {
-  position: fixed;
+  position: absolute;
   bottom: 20px;
   left: 50%;
   transform: translateX(-50%);
@@ -77,96 +109,103 @@ body {
   z-index: 1000;
 }
 
-.controls button {
-  padding: 12px 24px;
-  font-size: 18px;
+button {
+  padding: 10px 20px;
   border: none;
   background: #444;
   color: white;
-  border-radius: 40px;
   cursor: pointer;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+  border-radius: 6px;
+  font-size: 16px;
+  font-weight: bold;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+  transition: background 0.2s, transform 0.1s;
 }
 
-.controls button:hover {
+button:hover {
   background: #666;
 }
 
+button:active {
+  transform: scale(0.95);
+}
+
+/* Zoom controls */
 .zoom-controls {
-  position: fixed;
+  position: absolute;
   top: 20px;
   right: 20px;
   display: flex;
   flex-direction: column;
   gap: 10px;
-  z-index: 1000;
+  z-index: 2000;
 }
 
 .zoom-controls button {
-  width: 50px;
-  height: 50px;
+  padding: 8px 12px;
+  font-size: 18px;
   border-radius: 50%;
-  border: none;
-  background: #222;
+  width: 44px;
+  height: 44px;
+  text-align: center;
+  line-height: 24px;
+  font-weight: bold;
+  background: rgba(0,0,0,0.7);
+  border: 1px solid white;
+}
+
+.zoom-controls button:hover {
+  background: rgba(50,50,50,0.9);
+}
+
+/* Zoom percentage */
+#zoom-level {
+  position: absolute;
+  top: 80px;
+  right: 20px;
+  background: rgba(0,0,0,0.7);
   color: white;
-  font-size: 24px;
-  cursor: pointer;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+  padding: 5px 10px;
+  border-radius: 20px;
+  font-size: 14px;
+  border: 1px solid white;
+  z-index: 2000;
 }
 
-/* Responsive: adjust base size on smaller screens */
-@media (max-width: 1200px) {
-  #flipbook {
-    width: 900px;
-    height: 637px;
+/* Responsive */
+@media (max-width: 1024px) {
+  #flipbook-wrapper, #flipbook {
+    width: 90vw;
+    height: calc(90vw * 0.707);
   }
   #flipbook .page {
-    width: 450px;
-    height: 637px;
-  }
-}
-
-@media (max-width: 900px) {
-  #flipbook {
-    width: 700px;
-    height: 495px;
-  }
-  #flipbook .page {
-    width: 350px;
-    height: 495px;
+    width: 45vw;
+    height: calc(90vw * 0.707);
   }
 }
 
-@media (max-width: 700px) {
-  #flipbook {
-    width: 500px;
-    height: 354px;
+@media (max-width: 768px) {
+  #flipbook-wrapper, #flipbook {
+    width: 95vw;
+    height: calc(95vw * 0.707);
   }
   #flipbook .page {
-    width: 250px;
-    height: 354px;
+    width: 47.5vw;
+    height: calc(95vw * 0.707);
+  }
+  .controls button {
+    padding: 8px 16px;
+    font-size: 14px;
   }
 }
 
-@media (max-width: 500px) {
-  #flipbook {
-    width: 400px;
-    height: 283px;
+@media (max-width: 480px) {
+  .controls {
+    bottom: 10px;
+    gap: 10px;
   }
-  #flipbook .page {
-    width: 200px;
-    height: 283px;
-  }
-}
-
-/* On very small phones, make it almost full width */
-@media (max-width: 400px) {
-  #flipbook {
-    width: 98vw;
-    height: calc(98vw * 0.707);
-  }
-  #flipbook .page {
-    width: 49vw;
-    height: calc(98vw * 0.707);
+  .zoom-controls {
+    top: 10px;
+    right: 10px;
   }
 }
