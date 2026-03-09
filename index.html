@@ -3,37 +3,32 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>A4 Hardcover Flipbook</title>
+    <title>Realistic Corner Flip Book</title>
     <link rel="stylesheet" href="style.css">
-    <!-- jQuery and turn.js -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/turn.js/4.1.0/turn.min.js"></script>
 </head>
 <body>
-    <div class="shelf">
-        <div class="book-wrapper">
-            <div class="book" id="book">
-                <!-- Front cover (page 1) -->
-                <div class="page cover cover-front">
-                    <img src="images/cover.jpg" alt="Front Cover">
-                </div>
-                <!-- Inner pages -->
-                <div class="page">
-                    <img src="images/page1.jpg" alt="Page 1">
-                </div>
-                <div class="page">
-                    <img src="images/page2.jpg" alt="Page 2">
-                </div>
-                <div class="page">
-                    <img src="images/page3.jpg" alt="Page 3">
-                </div>
-                <div class="page">
-                    <img src="images/page4.jpg" alt="Page 4">
-                </div>
-                <!-- Back cover (last page) -->
-                <div class="page cover cover-back">
-                    <img src="images/back.jpg" alt="Back Cover">
-                </div>
+    <div class="book-container">
+        <div class="book" id="book">
+            <!-- Cover pages and inner pages -->
+            <div class="page cover-cover">
+                <img src="images/cover.jpg" alt="Cover">
+            </div>
+            <div class="page">
+                <img src="images/page1.jpg" alt="Page 1">
+            </div>
+            <div class="page">
+                <img src="images/page2.jpg" alt="Page 2">
+            </div>
+            <div class="page">
+                <img src="images/page3.jpg" alt="Page 3">
+            </div>
+            <div class="page">
+                <img src="images/page4.jpg" alt="Page 4">
+            </div>
+            <div class="page cover-cover">
+                <img src="images/back.jpg" alt="Back Cover">
             </div>
         </div>
     </div>
