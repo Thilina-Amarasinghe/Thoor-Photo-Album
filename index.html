@@ -5,19 +5,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>A4 Flip Book with Cover & Spine</title>
     <link rel="stylesheet" href="style.css">
-    <!-- jQuery and turn.js -->
+    <!-- jQuery and turn.js from CDN -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/turn.js/4.1.0/turn.min.js"></script>
 </head>
 <body>
-    <!-- පොත වටා ඇති wrapper එක – spine effect එකට -->
+    <!-- Wrapper to create the spine effect -->
     <div class="book-wrapper">
         <div class="book" id="book">
-            <!-- Front cover (right side when book is "closed") -->
+            <!-- Front cover (appears on the right when the book is closed) -->
             <div class="page cover cover-front">
                 <img src="images/cover.jpg" alt="Front Cover">
             </div>
-            <!-- Inside pages (ඔයාගේ පිටු) -->
+            <!-- Inner pages – replace with your own images -->
             <div class="page">
                 <img src="images/page1.jpg" alt="Page 1">
             </div>
@@ -30,7 +30,7 @@
             <div class="page">
                 <img src="images/page4.jpg" alt="Page 4">
             </div>
-            <!-- Back cover (left side when book is closed) -->
+            <!-- Back cover (appears on the left when the book is closed) -->
             <div class="page cover cover-back">
                 <img src="images/back.jpg" alt="Back Cover">
             </div>
