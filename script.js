@@ -1,5 +1,5 @@
 (function() {
-    // ---------- Audio (same as before) ----------
+    // ---------- Audio: Page flip sound ----------
     let audioContext = null;
     function getAudioContext() {
         if (!audioContext) {
@@ -15,6 +15,7 @@
         }
         const now = ctx.currentTime;
 
+        // Paper rustle sound
         const noiseBuffer = ctx.createBuffer(1, 0.12 * ctx.sampleRate, ctx.sampleRate);
         const output = noiseBuffer.getChannelData(0);
         for (let i = 0; i < noiseBuffer.length; i++) {
@@ -40,13 +41,13 @@
         noise.stop(now + 0.15);
     }
 
-    // ---------- Flipbook Setup ----------
+    // ---------- Responsive A4 sizing ----------
     const $book = $('#book');
 
     function resizeBook() {
-        let containerWidth = $('.flipbook-container').width();
-        let spreadWidth = Math.min(containerWidth * 0.8, 800);
-        let bookHeight = spreadWidth * 0.707;
+        let containerWidth = $('.album-container').width();
+        let spreadWidth = Math.min(containerWidth * 0.9, 1200);
+        let bookHeight = spreadWidth * 0.707; // A4 aspect ratio
 
         $book.width(spreadWidth);
         $book.height(bookHeight);
@@ -56,6 +57,7 @@
         }
     }
 
+    // ---------- Initialize turn.js ----------
     $(window).on('load', function() {
         resizeBook();
 
@@ -63,13 +65,14 @@
             width: $book.width(),
             height: $book.height(),
             autoCenter: true,
-            elevation: 50,
-            gradients: true,
-            shadows: true,
-            turnCorners: 'bl,br',
+            elevation: 50,           // පිටුව උඩට එන උස (3D effect)
+            gradients: true,         // පිටු අතර සෙවනැල්ල
+            shadows: true,           // පිටු යට සෙවනැල්ල
+            // turnCorners: 'bl,br'  // **මේ line එක්ක නැහැ** - ඒ කියන්නේ කොන් හතරෙන්ම අල්ලන්න පුළුවන්
             duration: 600
         });
 
+        // Play sound on page turn
         $book.on('turning', function() { playFlipSound(); });
         $book.on('start', function() { playFlipSound(); });
     });
@@ -78,8 +81,23 @@
         resizeBook();
     });
 
-    // View button clicks
-    $('.view-btn').on('click', function() {
-        alert('Opening flipbook... (මෙතනදි ඔයාට flipbook එක open කරන්න පුළුවන්)');
+    // Fallback
+    $(document).ready(function() {
+        setTimeout(function() {
+            if (!$book.data('turn')) {
+                resizeBook();
+                $book.turn({
+                    width: $book.width(),
+                    height: $book.height(),
+                    autoCenter: true,
+                    elevation: 50,
+                    gradients: true,
+                    shadows: true,
+                    duration: 600
+                });
+                $book.on('turning', function() { playFlipSound(); });
+                $book.on('start', function() { playFlipSound(); });
+            }
+        }, 100);
     });
 })();
