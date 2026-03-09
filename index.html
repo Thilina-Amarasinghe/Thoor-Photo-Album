@@ -2,22 +2,31 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Photo Album Flipbook</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Souvenir Flipbook</title>
+  
+  <!-- CSS file එක link කරන්න -->
   <link rel="stylesheet" href="style.css">
-  <!-- jQuery + turn.js -->
+  
+  <!-- jQuery සහ Turn.js (CDN වලින්) -->
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/turn.js/4.1.0/turn.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/turn.js/3/turn.min.js"></script>
 </head>
 <body>
+  <!-- Wrapper for zoom & pan -->
   <div id="flipbook-wrapper">
-    <div id="flipbook"></div>
+    <div id="flipbook">
+      <div class="page"><img src="images/page1.jpg" alt="Page 1"></div>
+      <div class="page"><img src="images/page2.jpg" alt="Page 2"></div>
+      <div class="page"><img src="images/page3.jpg" alt="Page 3"></div>
+      <div class="page"><img src="images/page4.jpg" alt="Page 4"></div>
+    </div>
   </div>
 
   <!-- Navigation Controls -->
   <div class="controls">
-    <button id="prevPage">◀</button>
-    <button id="nextPage">▶</button>
+    <button id="prevBtn">◀ Prev</button>
+    <button id="nextBtn">Next ▶</button>
   </div>
 
   <!-- Zoom Controls -->
@@ -26,7 +35,12 @@
     <button id="zoomOut">−</button>
     <button id="resetZoom">⟳</button>
   </div>
+  <div id="zoom-level">100%</div>
 
+  <!-- Flip sound -->
+  <audio id="flipSound" src="flip.mp3" preload="auto"></audio>
+
+  <!-- JavaScript file එක link කරන්න -->
   <script src="script.js"></script>
 </body>
 </html>
