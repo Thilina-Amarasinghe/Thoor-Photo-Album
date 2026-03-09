@@ -3,196 +3,38 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ZineY Style Flipbook</title>
+    <title>Photo Album Flip Book</title>
     <link rel="stylesheet" href="style.css">
-    <!-- Font Awesome for icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <!-- jQuery and turn.js -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/turn.js/4.1.0/turn.min.js"></script>
 </head>
 <body>
-    <!-- ZineY Style Dashboard Layout -->
-    <div class="dashboard">
-        <!-- Sidebar -->
-        <div class="sidebar">
-            <div class="logo">
-                <h2>Zine<span>Y</span></h2>
+    <div class="album-container">
+        <div class="book" id="book">
+            <!-- Cover page (front) -->
+            <div class="page photo-page">
+                <img src="images/cover.jpg" alt="Cover" class="photo">
             </div>
-            <div class="menu">
-                <div class="menu-item active">
-                    <i class="fas fa-book-open"></i>
-                    <span>Your Flipbooks</span>
-                </div>
-                <div class="menu-item">
-                    <i class="fas fa-plus-circle"></i>
-                    <span>Create New</span>
-                </div>
-                <div class="menu-item">
-                    <i class="fas fa-chart-bar"></i>
-                    <span>Analytics</span>
-                </div>
-                <div class="menu-item">
-                    <i class="fas fa-cog"></i>
-                    <span>Settings</span>
-                </div>
+            <!-- Inner pages (ඔයාගේ ඡායාරූප) -->
+            <div class="page photo-page">
+                <img src="images/photo1.jpg" alt="Photo 1" class="photo">
             </div>
-
-            <!-- Publication Types (from first screenshot) -->
-            <div class="publication-types">
-                <h4>Publications</h4>
-                <ul>
-                    <li><i class="fas fa-book"></i> Ebooks</li>
-                    <li><i class="fas fa-magazine"></i> Magazines</li>
-                    <li><i class="fas fa-clipboard-list"></i> Catalogs</li>
-                    <li><i class="fas fa-file-alt"></i> Brochures</li>
-                    <li><i class="fas fa-chart-line"></i> Reports</li>
-                    <li><i class="fas fa-presentation"></i> Presentations</li>
-                    <li><i class="fas fa-booklet"></i> Booklets</li>
-                    <li><i class="fas fa-utensils"></i> Restaurant menus</li>
-                </ul>
+            <div class="page photo-page">
+                <img src="images/photo2.jpg" alt="Photo 2" class="photo">
             </div>
-        </div>
-
-        <!-- Main Content -->
-        <div class="main-content">
-            <div class="header">
-                <h1>Your Flipbooks</h1>
-                <div class="header-actions">
-                    <button class="btn-primary"><i class="fas fa-upload"></i> Upload PDF</button>
-                    <button class="btn-secondary"><i class="fas fa-plus"></i> New</button>
-                </div>
+            <div class="page photo-page">
+                <img src="images/photo3.jpg" alt="Photo 3" class="photo">
             </div>
-
-            <!-- Stats Cards -->
-            <div class="stats-cards">
-                <div class="stat-card">
-                    <div class="stat-icon"><i class="fas fa-book-open"></i></div>
-                    <div class="stat-info">
-                        <h3>12</h3>
-                        <p>Total Flipbooks</p>
-                    </div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-icon"><i class="fas fa-eye"></i></div>
-                    <div class="stat-info">
-                        <h3>1,234</h3>
-                        <p>Total Views</p>
-                    </div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-icon"><i class="fas fa-share-alt"></i></div>
-                    <div class="stat-info">
-                        <h3>56</h3>
-                        <p>Shares</p>
-                    </div>
-                </div>
+            <div class="page photo-page">
+                <img src="images/photo4.jpg" alt="Photo 4" class="photo">
             </div>
-
-            <!-- Preview Section (from first screenshot) -->
-            <div class="preview-section">
-                <div class="preview-header">
-                    <h2>Preview</h2>
-                    <span class="badge">Amazing online publications to impress your audience</span>
-                </div>
-                
-                <!-- The Flipbook -->
-                <div class="flipbook-container">
-                    <div class="book" id="book">
-                        <div class="page cover-cover">
-                            <img src="images/cover.jpg" alt="Cover">
-                        </div>
-                        <div class="page">
-                            <img src="images/page1.jpg" alt="Page 1">
-                        </div>
-                        <div class="page">
-                            <img src="images/page2.jpg" alt="Page 2">
-                        </div>
-                        <div class="page">
-                            <img src="images/page3.jpg" alt="Page 3">
-                        </div>
-                        <div class="page">
-                            <img src="images/page4.jpg" alt="Page 4">
-                        </div>
-                        <div class="page cover-cover">
-                            <img src="images/back.jpg" alt="Back Cover">
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Recent Flipbooks (from second screenshot) -->
-            <div class="recent-flipbooks">
-                <h2>Recent Flipbooks</h2>
-                <div class="book-grid">
-                    <!-- Book Card 1 -->
-                    <div class="book-card">
-                        <div class="book-thumbnail">
-                            <img src="images/thumb1.jpg" alt="Minimalista">
-                            <div class="book-overlay">
-                                <button class="view-btn"><i class="fas fa-eye"></i> View</button>
-                                <button class="edit-btn"><i class="fas fa-edit"></i></button>
-                            </div>
-                        </div>
-                        <div class="book-info">
-                            <h3>Minimalista</h3>
-                            <p class="date">February 18, 2022</p>
-                            <p class="desc">building style for a minimalist home in Paris</p>
-                        </div>
-                    </div>
-
-                    <!-- Book Card 2 -->
-                    <div class="book-card">
-                        <div class="book-thumbnail">
-                            <img src="images/thumb2.jpg" alt="Visual diary">
-                            <div class="book-overlay">
-                                <button class="view-btn"><i class="fas fa-eye"></i> View</button>
-                                <button class="edit-btn"><i class="fas fa-edit"></i></button>
-                            </div>
-                        </div>
-                        <div class="book-info">
-                            <h3>Completely visual diary notebook</h3>
-                            <p class="date">March 30, 2022</p>
-                            <p class="desc">for every day of the week</p>
-                        </div>
-                    </div>
-
-                    <!-- Book Card 3 -->
-                    <div class="book-card">
-                        <div class="book-thumbnail">
-                            <img src="images/thumb3.jpg" alt="PARIS">
-                            <div class="book-overlay">
-                                <button class="view-btn"><i class="fas fa-eye"></i> View</button>
-                                <button class="edit-btn"><i class="fas fa-edit"></i></button>
-                            </div>
-                        </div>
-                        <div class="book-info">
-                            <h3>PARIS</h3>
-                            <p class="date">April 02, 2021</p>
-                            <p class="desc">the city that never sleeps</p>
-                        </div>
-                    </div>
-
-                    <!-- Book Card 4 -->
-                    <div class="book-card">
-                        <div class="book-thumbnail">
-                            <img src="images/thumb4.jpg" alt="3D">
-                            <div class="book-overlay">
-                                <button class="view-btn"><i class="fas fa-eye"></i> View</button>
-                                <button class="edit-btn"><i class="fas fa-edit"></i></button>
-                            </div>
-                        </div>
-                        <div class="book-info">
-                            <h3>3D</h3>
-                            <p class="date">June 15, 2021</p>
-                            <p class="desc">Interactive 3D designs</p>
-                        </div>
-                    </div>
-                </div>
+            <!-- Back cover -->
+            <div class="page photo-page">
+                <img src="images/back.jpg" alt="Back Cover" class="photo">
             </div>
         </div>
     </div>
-
     <script src="script.js"></script>
 </body>
 </html>
